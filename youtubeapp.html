@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #container{
+            display: flex;
+            height: 56px;
+            padding: 0 16px;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid grey;
+
+        }
+        .sub{
+            display: flex;
+            height: 56px;
+            padding: 0 16px;
+            flex-direction: row;
+            align-items: center;
+            
+        }
+        #videos{
+            display: grid;
+            grid-template-columns: 15% 15% 15% 15%;
+            grid-gap:5%;
+            width: 90%;
+            
+           margin-left: 13%;
+            
+        }
+    
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="satrt sub" style="border-bottom-style: hidden;">
+            <img src="https://img.icons8.com/material-sharp/24/000000/menu--v1.png" style="margin-right: 40px;"/>
+            <img src="https://img.icons8.com/color/48/000000/youtube-play.png" style="width: 30px; height: 30px;"/>
+            <img src="https://img.icons8.com/fluency/48/000000/youtube.png"/>
+        </div>
+        <div class="middle sub">
+            <input type="text" id="query" style="width: 520px; height: 27px;">
+            <button onclick="findvideos()" style="margin-left: 0px;"><img src="https://img.icons8.com/material-two-tone/24/000000/search.png"/></button>
+            <img src="https://img.icons8.com/material-rounded/24/000000/microphone.png"/>
+        </div>
+        <div class="end sub">
+            <img src="https://img.icons8.com/ios-glyphs/24/000000/camera-automation.png" style="margin-right: 20px;"/>
+            <img src="https://img.icons8.com/ios-filled/50/000000/moleskine-icon.png" style="margin-right: 20px;width: 30px; height: 30px;"/>
+            <img src="https://img.icons8.com/material-rounded/24/000000/bell--v2.png"/>
+        </div>
+    </div>
+    <div id="videos">
+
+    </div>
+</body>
+</html>
+
+<script>
+    //https://youtube.googleapis.com/youtube/v3/search?key=AIzaSyD7h7-o_iOjdG5VbdaLKda5qGQ0iNUDbq0
+    
+    var videos_div=document.getElementById("videos")
+    
+    async function findvideos(){
+       
+        videos_div.innerHTML=null;
+    
+    let inp=document.getElementById("query").value;
+    
+    
+    let res= await fetch(`https://youtube.googleapis.com/youtube/v3/search?q=${inp}&key=AIzaSyD7h7-o_iOjdG5VbdaLKda5qGQ0iNUDbq0&maxResults=20`)
+    let data=await res.json()
+    console.log(data);
+    
+    let {items}=data;
+    
+    items.forEach(({id:{videoId}}) => {
+        
+        let div=document.createElement("div");
+        
+        div.style.marginLeft="20px"
+    
+        div.innerHTML=`<iframe width="220" height="201" src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+        
+    </iframe>
+    `
+     videos_div.append(div)
+        
+    });
+    
+    }
+    
+    
+    
+    </script>
